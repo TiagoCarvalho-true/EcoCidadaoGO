@@ -1,8 +1,10 @@
 const { Router } = require('express');
-const userRoutes = require('./user.routes');
+const missaoRoutes = require('./missao.routes');
+const rankingRoutes = require('./ranking.routes');
 
 const routes = Router();
 
-routes.use('/usuarios', userRoutes);
+routes.use('/missoes', missaoRoutes);
+routes.use('/ranking', rankingRoutes);
 
 module.exports = routes;

@@ -1,0 +1,35 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql" // Replace with your database provider (e.g., mysql, sqlite)
+  url      = env("DATABASE_URL") // Make sure this matches your environment variable
+}
+
+
+model Usuario {
+  id            Int       @id @default(autoincrement())
+  nome          String
+  email         String    @unique
+  senhaHash     String
+  pontuacao     Int       @default(0)
+  missoes       MissaoUsuario[]
+  criadoEm      DateTime  @default(now())
+}
+
+model Missao {
+  id            Int       @id @default(autoincrement())
+  titulo        String
+  descricao     String
+  pontos        Int
+  ativa         Boolean   @default(true)
+  criadoEm      DateTime  @default(now())
+  usuarios      MissaoUsuario[]
+}
+
+model MissaoUsuario {
+  id            Int       @id @default(autoincrement())
+  usuarioId     Int
+  missaoId      Int
+  concluida     Boolean   @default(false)
+  usuario       Usuario   @relation(fields: [usuarioId], references: [id])
+  missao        Missao    @relation(fields: [missaoId], references: [id])
+}
