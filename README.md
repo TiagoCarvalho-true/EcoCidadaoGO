@@ -1,4 +1,3 @@
-# EcoCidadãoGO 
 
 Bem-vindo ao repositório da EcoCidadãoGO! Este projeto contém as implementações das funções relacionadas às missões e rankings.
 
