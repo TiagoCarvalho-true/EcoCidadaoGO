@@ -21,13 +21,14 @@ Criar uma aplicação web completa com **frontend** e **backend** integrados, ca
 ---
 
 ## 🗂️ Estrutura do Projeto
-
+```bash
 workspace/
 ├── back/
 │   └── ecocidadaogo-api/     # Backend em Node.js
 ├── front/
 │   └── ecocidadaogo-web/     # Frontend em React
 └── README.md
+```
 
 
 ---
@@ -145,7 +146,7 @@ npm run dev
    ```bash
    git add .
 ## Estrutura de Pastas
-
+```bash
 ecocidadaogo-api/
 │
 ├── prisma/                  → Esquema do banco (schema.prisma)
@@ -163,7 +164,7 @@ ecocidadaogo-api/
 ├── package.json
 └── server.js                → Arquivo principal para subir a aplicação
 ---
-
+```
 ## 📄 Licença
 
 Este projeto está sob a licença MIT.
