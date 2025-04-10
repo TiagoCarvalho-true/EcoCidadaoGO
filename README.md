@@ -131,14 +131,8 @@ npm run dev
 
 ---
 
-## 📄 Licença
 
-Este projeto está sob a licença MIT.
 
----
-
-> Desenvolvido com ❤️ por estudantes apaixonados por tecnologia e meio ambiente.
-```
 
 ## ⚠️ Instruções Importantes para Commits
 
@@ -169,3 +163,11 @@ ecocidadaogo-api/
 ├── package.json
 └── server.js                → Arquivo principal para subir a aplicação
 ---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+
+---
+> Desenvolvido com ❤️ por estudantes apaixonados por tecnologia e meio ambiente.
+```
