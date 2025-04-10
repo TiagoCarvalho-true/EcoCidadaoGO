@@ -140,20 +140,17 @@ Este projeto está sob a licença MIT.
 > Desenvolvido com ❤️ por estudantes apaixonados por tecnologia e meio ambiente.
 ```
 
----
-
-
 ## ⚠️ Instruções Importantes para Commits
 
-### 1. Evitar problemas de comparação entre versões e commits:
-- **Sempre realize os commits a partir do diretório `workspace`!**
+## 1. Evitar problemas de comparação entre versões e commits:
+- Sempre realize os commits a partir do diretório `workspace`!
 - Não faça commits diretamente do lado cliente ou servidor. Isso pode causar erros de comparação nas versões e comprometer a consistência dos commits.
 
-### 2. Como realizar um commit corretamente:
+## 2. Como realizar um commit corretamente:
 1. Certifique-se de que suas alterações estão na área de staging:
    ```bash
    git add .
-### Estrutura de Pastas
+## Estrutura de Pastas
 
 ecocidadaogo-api/
 │
@@ -171,3 +168,4 @@ ecocidadaogo-api/
 ├── .gitignore
 ├── package.json
 └── server.js                → Arquivo principal para subir a aplicação
+---
