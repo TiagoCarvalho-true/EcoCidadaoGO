@@ -1,9 +1,12 @@
 // prisma/schema.prisma
-datasource db {
-  provider = "postgresql" // Replace with your database provider (e.g., mysql, sqlite)
-  url      = env("DATABASE_URL") // Make sure this matches your environment variable
+generator client {
+  provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
 
 model Usuario {
   id            Int       @id @default(autoincrement())
@@ -32,4 +35,5 @@ model MissaoUsuario {
   concluida     Boolean   @default(false)
   usuario       Usuario   @relation(fields: [usuarioId], references: [id])
   missao        Missao    @relation(fields: [missaoId], references: [id])
+    @@unique([usuarioId, missaoId])
 }

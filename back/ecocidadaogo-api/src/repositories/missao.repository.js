@@ -1,14 +1,19 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../prisma');
 
-exports.criarMissao = async ({ titulo, descricao, pontos }) => {
+async function criarMissao({ titulo, descricao, pontos }) {
   return prisma.missao.create({
     data: { titulo, descricao, pontos }
   });
-};
+}
 
-exports.listarMissoesAtivas = async () => {
+async function listarMissoesAtivas() {
   return prisma.missao.findMany({
-    where: { ativa: true }
+    where: { ativa: true },
+    orderBy: { criadoEm: 'desc' }
   });
+}
+
+module.exports = {
+  criarMissao,
+  listarMissoesAtivas
 };

@@ -1,5 +1,7 @@
-const rankingRepository = require('../repositories/ranking.repository');
+const repo = require('../repositories/ranking.repository');
 
-exports.obterRanking = async () => {
-  return await rankingRepository.buscarTop10();
-};
+async function obterRanking() {
+  return repo.buscarTop10();
+}
+
+module.exports = { obterRanking };
