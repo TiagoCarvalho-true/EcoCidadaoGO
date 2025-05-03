@@ -1,19 +1,21 @@
-const missaoService = require('../services/missao.service');
+const service = require('../services/missao.service');
 
-exports.criarMissao = async (req, res) => {
+async function criarMissao(req, res) {
   try {
-    const missao = await missaoService.criar(req.body);
-    res.status(201).json(missao);
+    const missao = await service.criar(req.body);
+    return res.status(201).json(missao);
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(400).json({ erro: err.message });
   }
-};
+}
 
-exports.listarMissoes = async (req, res) => {
+async function listarMissoes(req, res) {
   try {
-    const missoes = await missaoService.listar();
-    res.json(missoes);
+    const missoes = await service.listar();
+    return res.json(missoes);
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(500).json({ erro: err.message });
   }
-};
+}
+
+module.exports = { criarMissao, listarMissoes };

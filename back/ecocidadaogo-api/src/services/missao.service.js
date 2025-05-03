@@ -1,9 +1,15 @@
-const missaoRepository = require('../repositories/missao.repository');
+const repo = require('../repositories/missao.repository');
 
-exports.criar = async (dados) => {
-  return await missaoRepository.criarMissao(dados);
-};
+async function criar(dados) {
+  // aqui você pode validar dados, por exemplo:
+  if (!dados.titulo || !dados.pontos) {
+    throw new Error('Título e pontos são obrigatórios');
+  }
+  return repo.criarMissao(dados);
+}
 
-exports.listar = async () => {
-  return await missaoRepository.listarMissoesAtivas();
-};
+async function listar() {
+  return repo.listarMissoesAtivas();
+}
+
+module.exports = { criar, listar };

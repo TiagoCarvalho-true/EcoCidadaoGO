@@ -1,8 +1,7 @@
 const { Router } = require('express');
-const rankingController = require('../controllers/ranking.controller');
+const controller = require('../controllers/ranking.controller');
 
 const router = Router();
-
-router.get('/', rankingController.listarTopUsuarios);
+router.get('/', controller.listarTopUsuarios);
 
 module.exports = router;

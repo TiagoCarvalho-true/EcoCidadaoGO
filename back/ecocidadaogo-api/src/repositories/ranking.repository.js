@@ -1,14 +1,11 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../prisma');
 
-exports.buscarTop10 = async () => {
+async function buscarTop10() {
   return prisma.usuario.findMany({
     orderBy: { pontuacao: 'desc' },
     take: 10,
-    select: {
-      id: true,
-      nome: true,
-      pontuacao: true
-    }
+    select: { id: true, nome: true, pontuacao: true }
   });
-};
+}
+
+module.exports = { buscarTop10 };

@@ -1,9 +1,8 @@
 const { Router } = require('express');
-const missaoController = require('../controllers/missao.controller');
+const controller = require('../controllers/missao.controller');
 
 const router = Router();
-
-router.post('/', missaoController.criarMissao);
-router.get('/', missaoController.listarMissoes);
+router.post('/', controller.criarMissao);
+router.get('/', controller.listarMissoes);
 
 module.exports = router;
