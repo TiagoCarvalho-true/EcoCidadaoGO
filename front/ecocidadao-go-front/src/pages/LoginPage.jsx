@@ -1,28 +1,24 @@
-// Exemplo de stub de página: src/pages/LoginPage.jsx
-import React, { useState } from 'react';
-import api from '../api/api';
-import { useNavigate, Link } from 'react-router-dom';
+// src/pages/LoginPage.jsx
+import React from 'react';
+import LoginForm from '../components/auth/LoginForm';
+import './LoginPage.css';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await api.post('/auth/login', { email, password });
-    navigate('/');
-  };
-
   return (
-    <div className="container">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="E-mail" required />
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-      </form>
-      <Link to="/register">Registrar-se</Link>
+    <div className="login-container">
+      <div className="login-panel left">
+        <div className="logo-area">
+      <img 
+  src="/assets/images/logo.png"  // Simplificando o caminho
+  alt="Eco Cidadão GO" 
+  className="logo" 
+/>
+          <h1>Eco Cidadão<br />GO</h1>
+        </div>
+      </div>
+      <div className="login-panel right">
+        <LoginForm />
+      </div>
     </div>
   );
 }
