@@ -1,28 +1,51 @@
-// src/components/auth/LoginForm.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const handleSubmit = async e => {
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // correto
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     try {
-      await api.post('/auth/login', { email, password });
-      // redirecionar para dashboard…
+      const response = await api.post('/auth/login', { email, password });
+      localStorage.setItem('token', response.data.token);
+      navigate('/dashboard'); // correto
     } catch (err) {
+      setError('Erro ao fazer login. Verifique suas credenciais.');
       console.error(err);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>E-mail
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+      {error && <div className="error-message">{error}</div>}
+      
+      <label>
+        E-mail
+        <input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
       </label>
-      <label>Senha
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+      
+      <label>
+        Senha
+        <input
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
       </label>
+      
       <button type="submit">Entrar</button>
     </form>
   );
