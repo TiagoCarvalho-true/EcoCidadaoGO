@@ -8,7 +8,7 @@ Bem-vindo ao repositório da EcoCidadãoGO! Este projeto contém as implementaç
 
 # 🌱 EcoCidadãoGO
 
-**EcoCidadãoGO** é uma plataforma que conecta cidadãos e órgãos públicos para promover a conscientização ambiental, facilitar denúncias de irregularidades e divulgar ações sustentáveis no estado de Goiás.
+**EcoCidadãoGO** é uma plataforma que conecta cidadãos e órgãos públicos para promover a conscientização ambiental, facilitar denúncias de irregularidades e divulgar ações sustentáveis no estado de Manaus 
 
 ## 📌 Objetivo
 
