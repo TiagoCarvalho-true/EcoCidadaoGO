@@ -1,49 +1,101 @@
-/* src/pages/LoginPage.css */
-*{
-    margin:0;
-    padding: 0;
-    
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 .login-container {
   display: flex;
   height: 100vh;
-  background: url('../assets/backgrounds/login-de-conta.png') center no-repeat;
+  background: url('../assets/backgrounds/login-de-conta.png') center center no-repeat;
   background-size: cover;
   font-family: 'Press Start 2P', sans-serif;
 }
 
-.login-panel {
+/* Container principal - centralização */
+.login-container {
+  display: flex;
+  height: 100vh;
+  background: url('../assets/backgrounds/login-de-conta.png') center center no-repeat;
+  background-size: cover;
+  font-family: 'Press Start 2P', sans-serif;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
 
-  flex: 1;
+/* Configuração dos painéis */
+.login-panel {
+  flex: 0 1 auto;
+  width: 400px;
+  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
-  background-color: rgba(0, 0, 0, 0.3); /* leve esverdeado/transparente se quiser */
   padding: 2rem;
   color: white;
+  margin: 0 -1px; /* Remove o espaço entre os painéis */
 }
 
+/* Painel esquerdo */
+.login-panel.left {
+  flex-direction: column;
+  text-align: center;
+  background-color: rgba(0, 128, 0, 0.8);
+  border-right: 2px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px 0 0 10px;
+}
+
+/* Painel direito */
+.login-panel.right {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.3);
+  border-left: 2px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0 10px 10px 0; /* Corrigido o border-radius */
+}
+
+/* Removendo estilos redundantes */
 .left {
   flex-direction: column;
   text-align: center;
-  background-color: rgb(0 128 0 / 62%);;
-  backdrop-filter: blur(4px);
+}
+
+/* Ajustando o conteúdo interno */
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.left {
+  flex-direction: column;
+  text-align: center;
+
 }
 
 .logo {
-  width: 120px;
-  margin-bottom: 1rem;
+  width: 173px;
+
+}
+.login-panel left {
+  width: 200px;
+  height: 200px;
+  background-color: #008000;
+
 }
 
 .left h1 {
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 2rem;
+  line-height: 2.5rem;
   color: #00ff88;
+ 
 }
 
 .right {
   flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
@@ -79,8 +131,88 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #00aa00;
 }
-.logo-area {
+
+.social-login {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  justify-content: center;
+
+}
+
+.social-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+    background-color: currentcolor;
+  border-radius: 10px;
+}
+
+.register-link {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #ccc;
+}
+.register-link a {
+  color: #00ff88;
+  text-decoration: none;
+}
+/* RESPONSIVIDADE */
+@media (max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .login-panel {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: 0.5rem 0;
+  }
+
+  .login-panel.left {
+    border-right: none;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .login-panel.right {
+    border-left: none;
+    border-radius: 0 0 10px 10px;
+  }
+
+  .right form {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .left h1 {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .register-link {
+    font-size: 0.7rem;
+  }
+
+  .social-icon {
+    width: 28px;
+    height: 28px;
+  }
 }
