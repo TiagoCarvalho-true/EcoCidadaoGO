@@ -13,12 +13,16 @@ export default function LoginForm() {
     setError('');
 
     try {
-      const response = await api.post('/auth/login', { email, password });
+      const response = await api.post('/auth/login', {
+        email: email,
+        senha: password // Alterado para 'senha' para corresponder ao backend
+      });
+      
       localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError('Erro ao fazer login. Verifique suas credenciais.');
-      console.error(err);
+      console.error('Erro ao fazer login:', err);
+      setError(err.response?.data?.erro || 'Falha ao fazer login.');
     }
   };
 
@@ -27,13 +31,23 @@ export default function LoginForm() {
       {error && <div className="error-message">{error}</div>}
       <label>
         Email
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <input 
+          type="email" 
+          value={email} 
+          onChange={e => setEmail(e.target.value)} 
+          required 
+        />
       </label>
       <label>
         Senha
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+        <input 
+          type="password" 
+          value={password} 
+          onChange={e => setPassword(e.target.value)} 
+          required 
+        />
       </label>
-      <button type="submit">Logar Sua Conta</button>
+      <button type="submit">Entrar</button>
     </form>
   );
 }
