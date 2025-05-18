@@ -22,7 +22,9 @@ export default function LoginPage() {
           <img src={facebookIcon} alt="Facebook" className="social-icon" />
         </div>
         <LoginForm />
-        <p className="register-link">Não possui uma conta? <a href="/register">Faça Registro</a></p>
+        <p className="register-link">
+          Não possui uma conta? <a href="/register">Faça Registro</a>
+        </p>
       </div>
     </div>
   );

@@ -1,0 +1,200 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.register-container {
+  display: flex;
+  height: 100vh;
+  background: url('../assets/backgrounds/register.jpg') center center no-repeat;
+  background-size: cover;
+  font-family: 'Press Start 2P', sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-panel {
+  flex: 0 1 auto;
+  width: 400px;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: white;
+  margin: 0 -1px;
+}
+
+.register-panel.left {
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px 0 0 10px;
+}
+
+.register-panel.right {
+  flex-direction: column;
+  background-color: rgba(0, 128, 0, 0.7);
+  border-radius: 0 10px 10px 0;
+  text-align: center;
+}
+
+form {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+form h2{
+    color: #f0f0f0;
+     text-shadow: 3px 4px 10px #014401;  /* Mudando de box-shadow para text-shadow */
+    margin-bottom: 1.5rem;          /* Espaçamento abaixo do título */
+    font-size: 1.5rem;              /* Tamanho da fonte */
+    text-align: center; 
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 0.75rem;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+}
+
+button[type="submit"] {
+  background-color: #008000;
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #00aa00;
+}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background-color: currentcolor;
+  border-radius: 10px;
+}
+
+.terms {
+  font-size: 0.6rem;
+  color: #fff;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.terms a {
+  color: #00ff88;
+  text-decoration: none;
+}
+
+.logo {
+  width: 173px;
+  margin-bottom: 1rem;
+}
+
+.right h1 {
+  color: #00ff88;
+  font-size: 2.2rem;
+  line-height: 3rem;
+}
+ @media (max-width: 768px) {
+  .register-container {
+    flex-direction: column-reverse;
+    padding: 1rem;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+
+  .register-panel {
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    min-height: 300px;
+    padding: 1.5rem;
+    margin: 0.5rem 0;
+    border-radius: 10px;
+  }
+
+  .register-panel.left,
+  .register-panel.right {
+    border-radius: 10px;
+    width: 90%;
+    margin:0;
+
+  }
+ 
+
+  form {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .logo {
+    width: 120px;
+    margin-bottom: 0.5rem;
+  }
+
+
+  .right h1 {
+    font-size: 1.8rem;
+    line-height: 2.5rem;
+  }
+
+  form h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .social-login {
+    margin: 0.5rem 0;
+  }
+
+  .terms {
+    font-size: 0.5rem;
+    text-align: center;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-panel {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .right h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  button[type="submit"] {
+    padding: 0.5rem;
+  }
+}
