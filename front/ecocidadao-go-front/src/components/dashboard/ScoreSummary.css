@@ -1,0 +1,19 @@
+.score-summary {
+  background-color: #001a00;
+  color: lime;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00ff00;
+  flex: 1;
+  max-width: 300px;
+  text-align: center;
+}
+
+.score {
+  font-size: 1.8rem;
+}
+
+.rank {
+  font-size: 1.2rem;
+  color: cyan;
+}

@@ -1,0 +1,13 @@
+.notifications-panel {
+  background-color: #003300;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00cc00;
+  flex: 1;
+  max-width: 300px;
+}
+
+.missions p, .ranking p {
+  margin: 0.3rem 0;
+}
