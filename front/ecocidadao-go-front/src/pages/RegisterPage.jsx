@@ -5,9 +5,6 @@ import logo from '../assets/images/logo.png';
 import googleIcon from '../assets/icons/google.png';
 import facebookIcon from '../assets/icons/facebook.png';
 
-
-
-
 export default function RegisterPage() {
     
   const [formData, setFormData] = useState({
@@ -129,7 +126,7 @@ const userData = {
               required
             />
             <label>
-              Eu Aceito os <a href="#">Termos e Condições</a>
+             {/*Eu Aceito os <a href="#">Termos e Condições</a>*/}
             </label>
           </div>
 
