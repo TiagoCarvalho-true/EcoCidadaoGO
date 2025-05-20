@@ -34,7 +34,7 @@ const fakePoints = [
 export default function InteractiveMap() {
   return (
     <MapContainer center={[-3.119, -60.021]}
- zoom={13} style={{ height: '400px', width: '50%' }}>
+ zoom={13} className='map'>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />

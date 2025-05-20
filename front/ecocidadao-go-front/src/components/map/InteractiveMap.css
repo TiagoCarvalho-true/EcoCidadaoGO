@@ -1,9 +1,15 @@
 .leaflet-container {
-  border-radius: 16px;
+  border-radius: 1rem;
   border: 3px solid #00ff00;
   box-shadow: 0 0 15px #0f0;
-  filter: brightness(1.05) contrast(1.2);
+  filter: brightness(1.0) contrast(1.0);
+}
 
+.map {
+  width: 800px;
+  height: 400px;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px #0f0;
 }
 
 .leaflet-popup-content-wrapper {
@@ -15,4 +21,11 @@
 
 .leaflet-popup-tip {
   background: #0f2f0f;
+}
+
+@media (max-width: 768px) {
+  .map {
+    width: 85%;
+    height: 350px;
+  }
 }
