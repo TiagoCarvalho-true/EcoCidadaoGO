@@ -1,6 +1,6 @@
 .score-summary {
-  background-color: #001a00;
-  color: lime;
+  background-color: #00ff00;
+  color: rgb(255, 255, 255);
   padding: 1rem 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px #00ff00;
