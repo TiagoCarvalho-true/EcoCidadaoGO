@@ -5,32 +5,56 @@ body {
 .dashboard-page {
   display: flex;
   min-height: 100vh;
-  background: #0a3d0a; /* verde escuro do fundo */
+  background: #0a3d0a;
 }
 
 .main-content {
+  position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-
+  font-family: "Pixelify Sans", sans-serif;
+  z-index: 1;
 }
 
+.main-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('/src/assets/backgrounds/background-dashboard.png') center center / cover no-repeat;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* GRADE DO DASHBOARD */
 .dashboard-grid {
   display: grid;
   grid-template-areas:
     "left right"
     "map map";
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 20px;
+  grid-template-rows: auto auto;
+  gap: 100px;
+  padding: 40px;
+  max-width: 1500px;
+  margin: 10px;
+  z-index: 1;
 }
 
+/* PAINÉIS */
 .left-panel {
   grid-area: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .right-panel {
   grid-area: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .map-panel {
@@ -40,13 +64,27 @@ body {
   align-items: center;
 }
 
+
+/* TÍTULO DO MAPA */
 .map-title {
   background-color: #00ff00;
-  color: #ebdede;
-  padding: 10px 20px;
-  font-size: 1.2rem;
+  color: white;
+  padding: 10px 60px;
+  font-size: 1.5rem;
   font-weight: bold;
   border-radius: 10px;
   margin-bottom: 10px;
-  box-shadow: 2px 4px 10px #0a3d0a;
+  box-shadow: 0 0 10px #00cc00;
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-areas:
+      "left"
+      "right"
+      "map";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 70px;
+  }
 }

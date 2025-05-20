@@ -11,7 +11,7 @@ export default function ScoreSummary({ score = 15, rank = 3 }) {
         <p className="rank-info">Sua posição: #{rank}</p>
       </div>
       
-      <div className="missions-panel">
+      {/*<div className="missions-panel">
         <h3>Missões Completadas</h3>
         <div className="missions-list">
           <p>✔ Quebra dos recicláveis</p>
@@ -27,7 +27,7 @@ export default function ScoreSummary({ score = 15, rank = 3 }) {
           <p>🏆 Beltrano: 22pts</p>
           <p>🏆 Você: 15pts</p>
         </div>
-      </div>
+      </div>*/}
     </div>
   );
 }
