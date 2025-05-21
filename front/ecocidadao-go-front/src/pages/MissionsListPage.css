@@ -1,0 +1,84 @@
+/* Layout base */
+.layout-container {
+  display: flex;
+  background: #164f16 url('../assets/backgrounds/background-dashboard.png');
+  background-size: cover;
+  min-height: 100vh;
+  font-family: 'Press Start 2P', sans-serif;
+  color: white;
+}
+
+/* Conteúdo principal */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Área da página de missões */
+.missions-page {
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* Título */
+.title {
+  font-size: 32px;
+  text-align: center;
+  color: #00ff00;
+  text-shadow: 2px 2px 0 #000;
+  margin-bottom: 30px;
+}
+
+/* Lista de missões */
+.missions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Cartão de missão */
+.mission-card {
+  background-color: #e6e6ff;
+  border-radius: 20px;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.mission-card:hover {
+  transform: scale(1.02);
+}
+
+/* Imagem da missão */
+.mission-card img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Conteúdo textual */
+.mission-content h2 {
+  font-size: 18px;
+  color: #0000ff;
+  margin-bottom: 10px;
+}
+
+.mission-content p {
+  font-size: 13px;
+  color: #222;
+  margin: 6px 0;
+}
+
+.points {
+  font-size: 14px;
+  color: #0000ff;
+  font-weight: bold;
+  margin-top: 10px;
+}

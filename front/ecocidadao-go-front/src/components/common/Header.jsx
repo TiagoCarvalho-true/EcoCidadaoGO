@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
@@ -24,9 +24,10 @@ const Header = () => {
           <i className="bi bi-bell-fill"></i>
         </div>
 
-        <button to="/register" className="register-button">
+        {/* ✅ CORRIGIDO: Link ao invés de button */}
+        <Link to="/register" className="register-button">
           Registrar
-        </button>
+        </Link>
       </div>
 
       <button className="menu-toggle" onClick={toggleMenu}>
