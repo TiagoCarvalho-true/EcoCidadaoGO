@@ -52,21 +52,70 @@
   filter: brightness(2.5) drop-shadow(0 0 4px limegreen);
 }
 
-@media (max-width: 768px) {
+/* Tablet */
+@media (max-width: 1024px) {
   .sidebar {
-    width: 50px;
-    height: 50%;
-    padding: 0.5rem 0;
+    width: 45px;
+    height: 40%;
+    padding: 0.7rem 0;
+    border-radius: 30px;
+    margin-left: 0.7rem;
   }
 
   .sidebar a {
-    width: 40px;
-    height: 40px;
-    margin: 0.5rem;
+    width: 36px;
+    height: 36px;
+    margin: 0.7rem;
   }
 
   .sidebar-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 40px;
+    height: 30%;
+    padding: 0.4rem 0;
+    border-radius: 22px;
+    margin-left: 0.2rem;
+    gap: 1rem;
+  }
+
+  .sidebar a {
+    width: 30px;
+    height: 30px;
+    margin: 0.4rem;
+  }
+
+  .sidebar-icon {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* Extra pequeno (celulares menores) */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 32px;
+    height: 22%;
+    padding: 0.2rem 0;
+    border-radius: 14px;
+    margin-left: 0;
+    gap: 0.7rem;
+  }
+
+  .sidebar a {
+    width: 22px;
+    height: 22px;
+    margin: 0.2rem;
+  }
+
+  .sidebar-icon {
+    width: 11px;
+    height: 11px;
   }
 }

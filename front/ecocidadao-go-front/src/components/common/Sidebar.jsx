@@ -14,7 +14,6 @@ export default function Sidebar() {
     { to: '/missions', icon: flagIcon, alt: 'Missões' },
     { to: '/ranking', icon: starIcon, alt: 'Ranking' },
     { to: '/map', icon: mapIcon, alt: 'Mapa' },
-   
   ];
 
   return (

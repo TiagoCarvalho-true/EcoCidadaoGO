@@ -37,3 +37,12 @@ model MissaoUsuario {
   missao        Missao    @relation(fields: [missaoId], references: [id])
     @@unique([usuarioId, missaoId])
 }
+
+model Coleta {
+  id          Int      @id @default(autoincrement())
+  tipoResiduo String
+  latitude    String
+  longitude   String
+  imagemUrl   String? // se quiser salvar o caminho da imagem
+  criadoEm    DateTime @default(now())
+}

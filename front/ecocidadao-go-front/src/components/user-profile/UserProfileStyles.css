@@ -1,0 +1,186 @@
+/* Fonte e estrutura geral */
+.container-user {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../../assets/backgrounds/background-dashboard.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  font-family: "Press Start 2P", monospace;
+  color: white;
+  padding: 2rem;
+}
+
+
+
+/* Botão de ícone */
+.icon-button {
+  background-color: #00cc00;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Conteúdo do perfil */
+.profile-content {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Esfera e foto do usuário */
+.user-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Círculo verde com sombra */
+.avatar {
+  width: 120px;
+  height: 120px;
+  background-color: #008000;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 12px #00ff00;
+  margin-bottom: 1rem;
+}
+
+/* Ícone no centro do círculo */
+.avatar i.bi-person-fill {
+  font-size: 60px;
+  color: white;
+}
+
+/* Nome e e-mail */
+.username {
+  font-size: 1.1rem;
+  color: #00ff00;
+  text-shadow: 1px 1px 2px black;
+  margin-bottom: 0.5rem;
+}
+
+.email {
+  font-size: 0.9rem;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+
+/* Bloco da safezone */
+.safezone-box {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #a0522d;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.safezone-box img {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Info da safezone */
+.safezone-info {
+  background-color: #000;
+  padding: 2.0rem;
+  border-radius: 10px;
+  color: #00ff00;
+  flex: 1 1 50px;
+}
+
+/* Botões */
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 1rem 5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Press Start 2P", monospace;
+  transition: background-color 0.5s;
+}
+
+.logout {
+  background-color: #333;
+  color: white;
+}
+
+.logout:hover {
+  background-color: #555;
+}
+
+.delete {
+  background-color: red;
+  color: white;
+}
+
+.delete:hover {
+  background-color: #7a0a0a;
+}
+
+/* Imagem decorativa da fogueira */
+.campfire img {
+  width: 100px;
+  max-width: 100px;
+  height: 100px;
+  margin-top: 5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .safezone-box {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .safezone-info {
+    margin-left: 0;
+  }
+
+  .btn {
+    font-size: 1.0rem;
+    padding: 0.9rem 2rem;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .avatar i.bi-person-fill {
+    font-size: 40px;
+  }
+
+  .username {
+    font-size: 0.9rem;
+  }
+
+  .email {
+    font-size: 0.75rem;
+  }
+}
