@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const prisma = require('../prisma/client'); // ajuste o caminho conforme seu projeto
+const prisma = new PrismaClient();// ajuste o caminho conforme seu projeto
 
 const router = Router();
 
