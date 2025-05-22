@@ -45,20 +45,24 @@ function FormularioPopup({ open, onClose, setMarkerPosition, setUltimaColeta }) 
   const [tipoResiduo, setTipoResiduo] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
+  const [geoError, setGeoError] = useState(""); // Novo estado para erro
 
-  // Função para atualizar a localização nos inputs
   function atualizarLocalizacao() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLatitude(position.coords.latitude.toString());
           setLongitude(position.coords.longitude.toString());
+          setGeoError(""); // Limpa erro
         },
         (error) => {
           setLatitude("");
           setLongitude("");
+          setGeoError("Não foi possível obter sua localização. Preencha manualmente.");
         }
       );
+    } else {
+      setGeoError("Geolocalização não suportada pelo navegador.");
     }
   }
 
@@ -208,6 +212,9 @@ function FormularioPopup({ open, onClose, setMarkerPosition, setUltimaColeta }) 
               boxSizing: "border-box"
             }}
           />
+          {geoError && (
+            <div style={{ color: "red", marginTop: 8 }}>{geoError}</div>
+          )}
           <button
             onClick={handleContinue}
             disabled={!tipoResiduo}
