@@ -41,8 +41,9 @@ model MissaoUsuario {
 model Coleta {
   id          Int      @id @default(autoincrement())
   tipoResiduo String
+  cep         String
   latitude    String
   longitude   String
-  imagemUrl   String? // se quiser salvar o caminho da imagem
+  imagemUrl   String?
   criadoEm    DateTime @default(now())
 }

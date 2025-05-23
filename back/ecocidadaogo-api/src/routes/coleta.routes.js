@@ -1,13 +1,14 @@
 const { Router } = require('express');
-const prisma = new PrismaClient();// ajuste o caminho conforme seu projeto
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const { tipoResiduo, latitude, longitude } = req.body;
+  const { tipoResiduo, cep, latitude, longitude, imagemUrl } = req.body;
   try {
     const coleta = await prisma.coleta.create({
-      data: { tipoResiduo, latitude, longitude }
+      data: { tipoResiduo, cep, latitude, longitude, imagemUrl }
     });
     res.status(201).json(coleta);
   } catch (err) {

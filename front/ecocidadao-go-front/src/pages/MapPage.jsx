@@ -9,12 +9,10 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import iconeLixo from '../assets/icons/salocadelixo.png';
 
-// Exemplo de ícone SVG (você pode trocar por <img src={icone} ... /> 
 const FormIcon = () => (
   <span role="img" aria-label="form">👜</span>
 );
 
-// Ícone customizado para o marcador
 const customIcon = new L.Icon({
   iconUrl: iconeLixo,
   iconSize: [40, 40],
@@ -22,7 +20,8 @@ const customIcon = new L.Icon({
   popupAnchor: [0, -40],
 });
 
-// Modal simples
+const userIcon = new L.Icon.Default();
+
 function Modal({ open, onClose, children }) {
   if (!open) return null;
   return (
@@ -37,85 +36,147 @@ function Modal({ open, onClose, children }) {
   );
 }
 
-// Formulário em etapas
-function FormularioPopup({ open, onClose, setMarkerPosition, setUltimaColeta }) {
+// Busca endereço completo pelo ViaCEP
+async function buscarEnderecoPorCep(cep) {
+  const cepLimpo = cep.replace(/\D/g, "");
+  const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+  const data = await response.json();
+  if (!data.erro) {
+    return data;
+  }
+  return null;
+}
+
+// Busca coordenadas pelo endereço (Nominatim OpenStreetMap)
+async function buscarCoordenadasPorEndereco(enderecoCompleto) {
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto + ', Brasil')}`
+  );
+  const data = await response.json();
+  if (data && data.length > 0) {
+    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+  }
+  return null;
+}
+
+function FormularioPopup({ open, onClose, adicionarColeta }) {
   const [step, setStep] = useState(1);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [tipoResiduo, setTipoResiduo] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [geoError, setGeoError] = useState(""); // Novo estado para erro
+  const [cep, setCep] = useState("");
+  const [geoError, setGeoError] = useState("");
+  const [endereco, setEndereco] = useState(null);
 
-  function atualizarLocalizacao() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude.toString());
-          setLongitude(position.coords.longitude.toString());
-          setGeoError(""); // Limpa erro
-        },
-        (error) => {
-          setLatitude("");
-          setLongitude("");
-          setGeoError("Não foi possível obter sua localização. Preencha manualmente.");
-        }
-      );
-    } else {
-      setGeoError("Geolocalização não suportada pelo navegador.");
-    }
-  }
-
-  // Atualiza localização ao abrir o formulário
+  // Preenche o CEP automaticamente ao chegar na etapa 2
   useEffect(() => {
-    if (open) {
-      atualizarLocalizacao();
+    async function preencherCepAutomaticamente() {
+      if (step === 2 && cep === "") {
+        let lat = -3.119;
+        let lon = -60.021;
+        if (navigator.geolocation) {
+          await new Promise((resolve) => {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
+                resolve();
+              },
+              () => resolve(),
+              { timeout: 5000 }
+            );
+          });
+        }
+        // Busca o CEP pelo Nominatim
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&country=Brazil&format=json`
+        );
+        const data = await response.json();
+        // Só preenche se não for genérico (ex: 69000000)
+        if (data && data.address && data.address.postcode && !/^69000/.test(data.address.postcode)) {
+          setCep(data.address.postcode.replace("-", ""));
+        } else {
+          setCep(""); // Não preenche se for genérico
+        }
+      }
     }
-  }, [open]);
+    preencherCepAutomaticamente();
+    // eslint-disable-next-line
+  }, [step]);
 
-  // Atualiza localização ao clicar em "Novo formulário"
+  // Quando o usuário digita um CEP, busca o endereço pelo ViaCEP
+  useEffect(() => {
+    async function buscarEndereco() {
+      if (cep.length >= 8) {
+        const enderecoViaCep = await buscarEnderecoPorCep(cep);
+        if (enderecoViaCep) {
+          setEndereco(enderecoViaCep);
+          setGeoError("");
+        } else {
+          setEndereco(null);
+          setGeoError("CEP não encontrado.");
+        }
+      } else {
+        setEndereco(null);
+      }
+    }
+    buscarEndereco();
+  }, [cep]);
+
   function handleRestart() {
     setStep(1);
     setImage(null);
     setImagePreview(null);
     setTipoResiduo("");
-    atualizarLocalizacao();
+    setCep("");
+    setGeoError("");
+    setEndereco(null);
   }
 
-  function handleContinue() {
+  async function handleContinue() {
     if (step === 2) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setMarkerPosition([position.coords.latitude, position.coords.longitude]);
-            setUltimaColeta({
-              imagePreview,
-              tipoResiduo,
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-          },
-          (error) => {
-            setMarkerPosition([parseFloat(latitude), parseFloat(longitude)]);
-            setUltimaColeta({
-              imagePreview,
-              tipoResiduo,
-              latitude,
-              longitude,
-            });
-          }
-        );
-      } else {
-        setMarkerPosition([parseFloat(latitude), parseFloat(longitude)]);
-        setUltimaColeta({
+      if (!cep || !endereco) {
+        setGeoError("Informe um CEP válido.");
+        return;
+      }
+
+      // Tenta várias combinações, incluindo só o CEP
+      let tentativas = [
+        [endereco.logradouro, endereco.bairro, endereco.localidade, endereco.uf].filter(Boolean).join(', '),
+        [endereco.bairro, endereco.localidade, endereco.uf].filter(Boolean).join(', '),
+        [endereco.localidade, endereco.uf].filter(Boolean).join(', '),
+        endereco.cep // Tenta só o CEP puro
+      ];
+
+      let coords = null;
+      for (let tentativa of tentativas) {
+        if (tentativa && tentativa.trim().length > 0) {
+          coords = await buscarCoordenadasPorEndereco(tentativa);
+          if (coords) break;
+        }
+      }
+
+      if (coords) {
+        // Adiciona nova coleta ao array
+        adicionarColeta({
           imagePreview,
           tipoResiduo,
-          latitude,
-          longitude,
+          cep: endereco.cep,
+          bairro: endereco.bairro,
+          logradouro: endereco.logradouro,
+          localidade: endereco.localidade,
+          uf: endereco.uf,
+          latitude: coords.lat,
+          longitude: coords.lon,
         });
+        setGeoError("");
+        setStep(step + 1);
+      } else {
+        setGeoError("Não foi possível localizar o endereço no mapa.");
       }
+    } else {
+      setStep(step + 1);
     }
-    setStep(step + 1);
   }
 
   function handleImageChange(e) {
@@ -176,9 +237,10 @@ function FormularioPopup({ open, onClose, setMarkerPosition, setUltimaColeta }) 
           </select>
           <input
             type="text"
-            placeholder="Latitude"
-            value={latitude}
-            onChange={e => setLatitude(e.target.value)}
+            placeholder="CEP"
+            value={cep}
+            onChange={e => setCep(e.target.value.replace(/\D/g, ""))}
+            maxLength={8}
             style={{
               background: "#eaffea",
               border: "2px solid #2ecc40",
@@ -193,31 +255,20 @@ function FormularioPopup({ open, onClose, setMarkerPosition, setUltimaColeta }) 
               boxSizing: "border-box"
             }}
           />
-          <input
-            type="text"
-            placeholder="Longitude"
-            value={longitude}
-            onChange={e => setLongitude(e.target.value)}
-            style={{
-              background: "#eaffea",
-              border: "2px solid #2ecc40",
-              borderRadius: 6,
-              color: "#0a3d0a",
-              padding: "8px 12px",
-              marginTop: 10,
-              fontSize: "1rem",
-              fontFamily: "inherit",
-              transition: "border 0.2s",
-              width: "100%",
-              boxSizing: "border-box"
-            }}
-          />
+          {endereco && (
+            <div style={{ marginTop: 8, fontSize: "0.95rem", color: "#0a3d0a" }}>
+              <div><strong>Logradouro:</strong> {endereco.logradouro}</div>
+              <div><strong>Bairro:</strong> {endereco.bairro}</div>
+              <div><strong>Cidade:</strong> {endereco.localidade}</div>
+              <div><strong>UF:</strong> {endereco.uf}</div>
+            </div>
+          )}
           {geoError && (
             <div style={{ color: "red", marginTop: 8 }}>{geoError}</div>
           )}
           <button
             onClick={handleContinue}
-            disabled={!tipoResiduo}
+            disabled={!tipoResiduo || !cep || !endereco}
             style={{ marginTop: 16 }}
           >
             Continuar
@@ -239,24 +290,37 @@ function FormularioPopup({ open, onClose, setMarkerPosition, setUltimaColeta }) 
 
 export default function MapHomePage() {
   const [formOpen, setFormOpen] = useState(false);
-  const [markerPosition, setMarkerPosition] = useState(null);
+  const [coletas, setColetas] = useState([]);
   const [mapCenter, setMapCenter] = useState([-3.119, -60.021]);
-  const [ultimaColeta, setUltimaColeta] = useState(null);
+  const [userPosition, setUserPosition] = useState(null);
 
-  // Centraliza o mapa na localização do usuário ao abrir a página
+  function atualizarLocalizacaoUsuario() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setMapCenter([lat, lng]);
+          setUserPosition([lat, lng]);
+        },
+        () => {
+          alert("Não foi possível obter sua localização.");
+        }
+      );
+    } else {
+      alert("Geolocalização não suportada pelo navegador.");
+    }
+  }
+
   useEffect(() => {
     let watchId;
     if (navigator.geolocation) {
       watchId = navigator.geolocation.watchPosition(
         (position) => {
           setMapCenter([position.coords.latitude, position.coords.longitude]);
-        },
-        (error) => {
-
         }
       );
     }
-    // Limpa o watcher ao desmontar o componente
     return () => {
       if (watchId) navigator.geolocation.clearWatch(watchId);
     };
@@ -277,26 +341,39 @@ export default function MapHomePage() {
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {/* Exemplo de marcador fixo */}
-            <Marker position={[-3.119, -60.021]} />
-            {/* Marcador customizado após o formulário */}
-            {markerPosition && ultimaColeta && (
-              <Marker position={markerPosition} icon={customIcon}>
+            {userPosition && (
+              <Marker position={userPosition} icon={userIcon}>
                 <Popup>
-                  <div style={{ maxWidth: 220 }}>
-                    <strong>Tipo de Resíduo:</strong> {ultimaColeta.tipoResiduo}<br />
-                    <strong>Latitude:</strong> {ultimaColeta.latitude}<br />
-                    <strong>Longitude:</strong> {ultimaColeta.longitude}<br />
-                    {ultimaColeta.imagePreview && (
+                  <div>
+                    <strong>Sua localização atual</strong>
+                  </div>
+                </Popup>
+              </Marker>
+            )}
+            {coletas.map((coleta, idx) => (
+              <Marker
+                key={idx}
+                position={[coleta.latitude, coleta.longitude]}
+                icon={customIcon}
+              >
+                <Popup>
+                  <div style={{ maxWidth: 240 }}>
+                    <strong>Tipo de Resíduo:</strong> {coleta.tipoResiduo}<br />
+                    <strong>CEP:</strong> {coleta.cep}<br />
+                    <strong>Logradouro:</strong> {coleta.logradouro}<br />
+                    <strong>Bairro:</strong> {coleta.bairro}<br />
+                    <strong>Cidade:</strong> {coleta.localidade}<br />
+                    <strong>UF:</strong> {coleta.uf}<br />
+                    {coleta.imagePreview && (
                       <img
-                        src={ultimaColeta.imagePreview}
+                        src={coleta.imagePreview}
                         alt="Foto do resíduo"
                         style={{
                           width: "100%",
                           maxWidth: 200,
                           marginTop: 20,
                           borderRadius: 8,
-                          border: "2px solidrgb(110, 255, 127)",
+                          border: "2px solid rgb(110, 255, 127)",
                           objectFit: "cover"
                         }}
                       />
@@ -304,19 +381,21 @@ export default function MapHomePage() {
                   </div>
                 </Popup>
               </Marker>
-            )}
+            ))}
           </MapContainer>
         </div>
         <div className="map-bottom-buttons">
           <GreenButton icon={<FormIcon />} onClick={() => setFormOpen(true)}>
             Formulario
           </GreenButton>
+          <GreenButton onClick={atualizarLocalizacaoUsuario}>
+            Atualizar localização
+          </GreenButton>
         </div>
         <FormularioPopup
           open={formOpen}
           onClose={() => setFormOpen(false)}
-          setMarkerPosition={setMarkerPosition}
-          setUltimaColeta={setUltimaColeta}
+          adicionarColeta={(coleta) => setColetas((prev) => [...prev, coleta])}
         />
       </main>
     </div>
