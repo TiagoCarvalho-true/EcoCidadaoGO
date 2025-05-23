@@ -3,6 +3,7 @@ import UserPhoto from "./UserPhoto";
 import Safezone from "./Safezone";
 import Sidebar from "../common/Sidebar";
 import "./UserProfileStyles.css";
+import { Link } from 'react-router-dom';
 
 export default function ContainerUser() {
   return (
@@ -13,8 +14,12 @@ export default function ContainerUser() {
         <UserPhoto />
         <Safezone />
         <div className="buttons">
-          <button className="btn logout"> Log out</button>
-          <button className="btn delete"> Delete</button>
+          <Link to="/register" className="btn logout">
+            Sair da Conta
+          </Link>
+          <Link to="/login" className="btn delete">
+            Deletar Conta
+          </Link>
         </div>
       </div>
     </div>

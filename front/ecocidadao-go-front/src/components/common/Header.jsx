@@ -16,15 +16,14 @@ const Header = () => {
       </div>
 
       <div className="header-right">
-        <button className="icon-button">
+        <Link to="/profile" className="icon-button">
           <i className="bi bi-person-fill"></i>
-        </button>
+        </Link>
 
-        <div className="icon-button notification">
+        <Link to="/notifications" className="icon-button notification">
           <i className="bi bi-bell-fill"></i>
-        </div>
+        </Link>
 
-        {/* ✅ CORRIGIDO: Link ao invés de button */}
         <Link to="/register" className="register-button">
           Registrar
         </Link>
