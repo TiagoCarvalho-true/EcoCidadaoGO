@@ -15,10 +15,12 @@ export default function LoginForm() {
     try {
       const response = await api.post('/auth/login', {
         email: email,
-        senha: password // Alterado para 'senha' para corresponder ao backend
+        senha: password
       });
       
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      
       navigate('/dashboard');
     } catch (err) {
       console.error('Erro ao fazer login:', err);

@@ -18,7 +18,7 @@ model Usuario {
   criadoEm      DateTime  @default(now())
 }
 
-model Missao { 
+model Missao {
   id            Int       @id @default(autoincrement())
   titulo        String
   descricao     String
