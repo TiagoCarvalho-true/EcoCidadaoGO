@@ -4,10 +4,12 @@ const rankingRoutes = require('./ranking.routes');
 const missaoUsuarioRoutes = require('./missaoUsuario.routes');
 const authRoutes = require('./auth.routes');
 const coletaRoutas = require('./coleta.routes');
-// (adicione aqui outras rotas conforme for criando)
+const usuarioRoutes = require('./usuario.routes'); // Nova importação
+
 const routes = Router();
 
 routes.use('/auth', authRoutes);
+routes.use('/usuarios', usuarioRoutes);
 routes.use('/missoes-usuario', missaoUsuarioRoutes);
 routes.use('/missoes', missaoRoutes);
 routes.use('/ranking', rankingRoutes);

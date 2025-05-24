@@ -27,7 +27,7 @@ export default function AppRoutes() {
         <Route path="/missions" element={<ProtectedRoute><MissionsListPage /></ProtectedRoute>} />
         <Route path="/missions/:id" element={<ProtectedRoute><MissionDetailPage /></ProtectedRoute>} />
         <Route path="/ranking" element={<ProtectedRoute><RankingPage /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProfilePage />}/>{/*LEMBRAR DE COLOCAR O PROTECTROUTE*/}
+        <Route path="/perfil" element={<ProfilePage />}/>{/*LEMBRAR DE COLOCAR O PROTECTROUTE*/}
         <Route path="/cooperatives" element={<ProtectedRoute><CooperativesListPage /></ProtectedRoute>} />
         <Route path="/schedule" element={<ProtectedRoute><SchedulePage /></ProtectedRoute>} />
         <Route path="/collections" element={<ProtectedRoute><MyCollectionsPage /></ProtectedRoute>} />

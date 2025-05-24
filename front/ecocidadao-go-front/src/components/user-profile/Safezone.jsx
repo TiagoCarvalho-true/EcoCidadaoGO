@@ -2,22 +2,20 @@ import React from "react";
 import "./UserProfileStyles.css";
 import cavaleiroImg from "../../assets/images/cavaleiro.png";
 
-export default function Safezone() {
+export default function Safezone({ concluidas, pendentes, nivel, experiencia }) {
   return (
     <div className="safezone-box">
-        <img src={cavaleiroImg} alt="cavaleiro" />
-
+      <img src={cavaleiroImg} alt="cavaleiro" />
       <div className="safezone-info">
         <h2>SAFEZONE</h2>
         <ul>
-          <li>2 Missoes Feitas</li>
-          <li>3 Missioes Para fazer</li>
-          <li>2 Pets Capurados</li>
-          <li>Nivel: 2</li>
-          <li>Experiencia: 50</li>
+          <li>{concluidas} Missões Feitas</li>
+          <li>{pendentes} Missões Para Fazer</li>
+          <li>2 Pets Capturados</li>
+          <li>Nível: {nivel}</li>
+          <li>Experiência: {experiencia}</li>
         </ul>
       </div>
     </div>
-    
   );
 }

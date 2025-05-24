@@ -4,14 +4,21 @@ const routes = require('./routes');
 
 const app = express();
 
-
-
-// Libere a origem do front-end
+// Middlewares
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true // se precisar usar cookies/autenticação
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true
 }));
 app.use(express.json());
-app.use(routes);
+
+// Rotas
+app.use('/', routes);
+
+
+// Tratamento de erros
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ erro: 'Erro interno do servidor' });
+});
 
 module.exports = app;
