@@ -1,7 +1,7 @@
 // src/pages/MissionsListPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 
 import './MissionDetailPage';
 import './MissionsListPage.css';
@@ -14,9 +14,19 @@ const MissionsListPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/missoes')
-      .then(res => setMissoes(res.data))
-      .catch(err => console.error('Erro ao carregar missões:', err));
+    api.get('/missoes')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setMissoes(res.data);
+        } else {
+          console.error('Dados de missões não são um array:', res.data);
+          setMissoes([]);
+        }
+      })
+      .catch(err => {
+        console.error('Erro ao carregar missões:', err);
+        setMissoes([]);
+      });
   }, []);
 
   return (
@@ -27,7 +37,7 @@ const MissionsListPage = () => {
       <div className="missions-page">
         <h1 className="title">Missões</h1>
         <div className="missions-list">
-          {missoes.map(missao => (
+          {Array.isArray(missoes) && missoes.map(missao => (
             <div key={missao.id} className="mission-card" onClick={() => navigate(`/missoes/${missao.id}`)}>
               <img src={`/assets/missoes/${missao.imagem}`} alt={missao.titulo} />
               <div className="mission-content">

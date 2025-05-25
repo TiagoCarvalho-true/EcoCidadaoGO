@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import './RankingPage.css';
 
 import Header from '../components/common/Header';
@@ -9,9 +9,19 @@ export default function RankingPage() {
   const [ranking, setRanking] = useState([]);
 
   useEffect(() => {
-    axios.get('/ranking')
-      .then(res => setRanking(res.data))
-      .catch(err => console.error('Erro ao buscar ranking:', err));
+    api.get('/ranking')
+      .then(res => {
+        if (Array.isArray(res.data)) {
+          setRanking(res.data);
+        } else {
+          console.error('Dados de ranking não são um array:', res.data);
+          setRanking([]);
+        }
+      })
+      .catch(err => {
+        console.error('Erro ao buscar ranking:', err);
+        setRanking([]);
+      });
   }, []);
 
   return (
@@ -35,7 +45,7 @@ export default function RankingPage() {
               </tr>
             </thead>
             <tbody>
-              {ranking.map((user, index) => (
+              {Array.isArray(ranking) && ranking.map((user, index) => (
                 <tr key={index} className={index === 0 ? 'highlight' : ''}>
                   <td>{user.nome}</td>
                   <td>
