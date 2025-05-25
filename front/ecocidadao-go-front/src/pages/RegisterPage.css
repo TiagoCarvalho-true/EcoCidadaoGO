@@ -35,65 +35,113 @@
 
 .register-panel.right {
   flex-direction: column;
-  background-color: rgba(0, 128, 0, 0.7);
+  background: rgba(26, 133, 255, 0.35);
   border-radius: 0 10px 10px 0;
   text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 }
 
-form {
+.register-panel.left form {
   width: 100%;
   max-width: 300px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
-form h2{
-    color: #f0f0f0;
-     text-shadow: 3px 4px 10px #014401;  /* Mudando de box-shadow para text-shadow */
-    margin-bottom: 1.5rem;          /* Espaçamento abaixo do título */
-    font-size: 1.5rem;              /* Tamanho da fonte */
-    text-align: center; 
+
+.register-panel.left button[type="submit"] {
+  background: #1A85FF;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-family: 'Press Start 2P', sans-serif;
+  padding: 1rem 0;
+  margin-top: 1.5rem;
+  width: 100%;
+  box-shadow: 0 2px 8px #1A85FF33;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.register-panel.left button[type="submit"]:hover {
+  background: #166dc2;
+}
+
+/* Centralizar o título e espaçamento */
+.register-panel.left form h2 {
+  color: #fff;
+  text-shadow: 3px 4px 10px #1A85FF;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Espaço entre as logos sociais */
+.register-panel.left .social-login {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Espaço e estilo para o divisor "OU" */
+.register-panel.left .divider {
+  display: block;
+  text-align: center;
+  color: #fff;
+  margin: 1rem 0 1rem 0;
+  font-family: 'Press Start 2P', sans-serif;
+  font-size: 1rem;
+  opacity: 0.7;
+  letter-spacing: 2px;
+}
+
+/* Inputs com borda e sombra azul */
+.register-panel.left input[type="text"],
+.register-panel.left input[type="email"],
+.register-panel.left input[type="password"] {
   padding: 0.75rem;
-  border-radius: 5px;
-  border: none;
+  border-radius: 8px;
+  border: 2px solid #1A85FF;
   font-size: 1rem;
   background-color: #f0f0f0;
+  box-shadow: 0 0 0 2px #1A85FF33;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
-button[type="submit"] {
-  background-color: #008000;
-  color: white;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
+.register-panel.left input[type="text"]:focus,
+.register-panel.left input[type="email"]:focus,
+.register-panel.left input[type="password"]:focus {
+  border: 2px solid #1A85FF;
+  box-shadow: 0 0 0 3px #1A85FF55;
+}
+
+/* Logos sociais com fundo/borda azul */
+.register-panel.left .social-icon {
+  width: 50px;
+  height: 50px;
   cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background-color: #00aa00;
-}
-
-.social-login {
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #1A85FF;
+  box-shadow: 0 0 8px #1A85FF55;
   display: flex;
+  padding: 10px;
+  align-items: center;
   justify-content: center;
-  gap: 1rem;
+  transition: box-shadow 0.2s, border 0.2s;
 }
 
-.social-icon {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  background-color: currentcolor;
-  border-radius: 10px;
+.register-panel.left .social-icon:hover {
+  box-shadow: 0 0 16px #1A85FF;
+  border: 2.5px solid #1A85FF;
 }
 
-.terms {
+.register-panel.left .terms {
   font-size: 0.6rem;
   color: #fff;
   display: flex;
@@ -101,29 +149,30 @@ button[type="submit"]:hover {
   align-items: center;
 }
 
-.terms a {
-  color: #00ff88;
+.register-panel.left .terms a {
+  color: #00296f;
   text-decoration: none;
 }
 
-.logo {
-  width: 173px;
+.logo-ecocidadao {
+  width: 120px;
+  height: 120px;
   margin-bottom: 1rem;
 }
 
 .right h1 {
-  color: #00ff88;
+  color: #00296f;
   font-size: 2.2rem;
   line-height: 3rem;
 }
- @media (max-width: 768px) {
+
+@media (max-width: 768px) {
   .register-container {
     flex-direction: column-reverse;
     padding: 1rem;
     height: auto;
     min-height: 100vh;
   }
-  
 
   .register-panel {
     width: 90%;
@@ -139,12 +188,10 @@ button[type="submit"]:hover {
   .register-panel.right {
     border-radius: 10px;
     width: 90%;
-    margin:0;
-
+    margin: 0;
   }
- 
 
-  form {
+  .register-panel.left form {
     max-width: 100%;
     padding: 0 1rem;
   }
@@ -154,22 +201,21 @@ button[type="submit"]:hover {
     margin-bottom: 0.5rem;
   }
 
-
   .right h1 {
     font-size: 1.8rem;
     line-height: 2.5rem;
   }
 
-  form h2 {
+  .register-panel.left form h2 {
     font-size: 1.2rem;
     margin-bottom: 1rem;
   }
 
-  .social-login {
+  .register-panel.left .social-login {
     margin: 0.5rem 0;
   }
 
-  .terms {
+  .register-panel.left .terms {
     font-size: 0.5rem;
     text-align: center;
     padding: 0 1rem;
@@ -187,14 +233,14 @@ button[type="submit"]:hover {
     line-height: 2rem;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
+  .register-panel.left input[type="text"],
+  .register-panel.left input[type="email"],
+  .register-panel.left input[type="password"] {
     padding: 0.5rem;
     font-size: 0.9rem;
   }
 
-  button[type="submit"] {
+  .register-panel.left button[type="submit"] {
     padding: 0.5rem;
   }
 }
