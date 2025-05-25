@@ -10,7 +10,7 @@ export default function LoginPage() {
     <div className="login-container">
       <div className="login-panel left">
         <div className="logo-area">
-          <img src="/assets/images/logo.png" alt="Eco Cidadão GO" className="logo" />
+          <img src="/assets/images/logo.png" alt="Eco Cidadão GO" className="logo-ecocidadao" />
           <h1>Eco Cidadão<br />GO</h1>
         </div>
       </div>
@@ -18,8 +18,16 @@ export default function LoginPage() {
       <div className="login-panel right">
         <h2>Login de Conta</h2>
         <div className="social-login">
-          <img src={googleIcon} alt="Google" className="social-icon" />
-          <img src={facebookIcon} alt="Facebook" className="social-icon" />
+          <img
+            src={googleIcon}
+            alt="Google"
+            className="social-icon"
+          />
+          <img
+            src={facebookIcon}
+            alt="Facebook"
+            className="social-icon"
+          />
         </div>
         <LoginForm />
         <p className="register-link">

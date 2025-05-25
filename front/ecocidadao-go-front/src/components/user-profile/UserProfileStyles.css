@@ -84,7 +84,7 @@
   margin: 1rem 0;
   border-radius: 10px;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   justify-content: center;
   align-items: center;
   gap: 1rem;
@@ -120,6 +120,7 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  text-decoration: none;
   font-family: "Press Start 2P", monospace;
   transition: background-color 0.5s;
 }
@@ -153,9 +154,7 @@
 /* Responsividade */
 @media (max-width: 768px) {
   .safezone-box {
-    flex-direction: column;
     align-items: center;
-    text-align: center;
   }
 
   .safezone-info {

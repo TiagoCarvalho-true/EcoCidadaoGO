@@ -126,7 +126,7 @@ const userData = {
               required
             />
             <label>
-             {/*Eu Aceito os <a href="#">Termos e Condições</a>*/}
+              Eu Aceito os <a href="#">Termos e Condições</a>
             </label>
           </div>
 
@@ -139,7 +139,7 @@ const userData = {
 
       <div className="register-panel right">
         <div className="logo-area">
-          <img src={logo} alt="Eco Cidadão GO" className="logo" />
+          <img src={logo} alt="Eco Cidadão GO" className="logo-ecocidadao" />
           <h1>Eco<br />Cidadão<br />GO</h1>
         </div>
       </div>
