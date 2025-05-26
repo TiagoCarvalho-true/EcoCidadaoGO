@@ -4,6 +4,7 @@ import './RankingPage.css';
 
 import Header from '../components/common/Header';
 import Sidebar from '../components/common/Sidebar';
+import cavaleiro from '../assets/images/cavaleiro.png';
 
 export default function RankingPage() {
   const [ranking, setRanking] = useState([]);
@@ -50,7 +51,7 @@ export default function RankingPage() {
                   <td>{user.nome}</td>
                   <td>
                     <img
-                      src={`/assets/pets/${user.pet || 'pet1.png'}`}
+                      src={cavaleiro}
                       alt="pet"
                       className="pet-img"
                     />
