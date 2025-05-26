@@ -12,7 +12,7 @@ app.use(cors({
 app.use(express.json());
 
 // Rotas
-app.use('/', routes);
+app.use('/', routes) ;
 
 
 // Tratamento de erros

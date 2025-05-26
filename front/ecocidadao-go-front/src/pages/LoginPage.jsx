@@ -3,7 +3,8 @@ import LoginForm from '../components/auth/LoginForm';
 import './LoginPage.css';
 
 import googleIcon from '../assets/icons/google.png';
-import facebookIcon from '../assets/icons/facebook.png';
+
+
 
 export default function LoginPage() {
   return (
@@ -23,11 +24,7 @@ export default function LoginPage() {
             alt="Google"
             className="social-icon"
           />
-          <img
-            src={facebookIcon}
-            alt="Facebook"
-            className="social-icon"
-          />
+          
         </div>
         <LoginForm />
         <p className="register-link">
