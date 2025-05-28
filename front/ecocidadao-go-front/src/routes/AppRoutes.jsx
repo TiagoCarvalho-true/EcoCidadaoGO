@@ -22,9 +22,9 @@ export default function AppRoutes() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-        <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>}/>
+        <Route path="/map" element={<ProtectedRoute><MapPage /></ProtectedRoute>} />
         <Route path="/map/new" element={<ProtectedRoute><NewPointPage /></ProtectedRoute>} />
-        <Route path="/missions" element={<ProtectedRoute><MissionsListPage /></ProtectedRoute>} />
+        <Route path="/missions" element={<ProtectedRoute><MissionsListPage/></ProtectedRoute>} />
         <Route path="/missions/:id" element={<ProtectedRoute><MissionDetailPage /></ProtectedRoute>} />
         <Route path="/ranking" element={<ProtectedRoute><RankingPage /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}/>

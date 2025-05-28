@@ -9,6 +9,14 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import iconeLixo from '../assets/icons/salocadelixo.png';
 
+// Corrige o caminho dos ícones padrão do Leaflet no React
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
+
 const FormIcon = () => (
   <span role="img" aria-label="form">👜</span>
 );
@@ -20,6 +28,7 @@ const customIcon = new L.Icon({
   popupAnchor: [0, -40],
 });
 
+// Ícone azul padrão do Leaflet para localização do usuário
 const userIcon = new L.Icon.Default();
 
 function Modal({ open, onClose, children }) {
@@ -34,6 +43,16 @@ function Modal({ open, onClose, children }) {
       </div>
     </div>
   );
+}
+
+// Função para converter arquivo em base64
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = e => reject(e);
+    reader.readAsDataURL(file);
+  });
 }
 
 // Busca endereço completo pelo ViaCEP
@@ -59,6 +78,29 @@ async function buscarCoordenadasPorEndereco(enderecoCompleto) {
   return null;
 }
 
+// Busca CEP pelo lat/lon (Nominatim + ViaCEP para precisão)
+async function buscarCepPorLatLon(lat, lon) {
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&country=Brazil&format=json`
+  );
+  const data = await response.json();
+  if (data && data.address && data.address.postcode) {
+    const cepNominatim = data.address.postcode.replace("-", "");
+    // Se o CEP termina com "000", tente buscar pelo ViaCEP usando o bairro/cidade
+    if (/000$/.test(cepNominatim) && data.address.road && data.address.city) {
+      // Tenta buscar um endereço mais preciso pelo ViaCEP
+      // Aqui usamos o próprio CEP, mas você pode melhorar usando outros dados se quiser
+      const buscaCep = await fetch(`https://viacep.com.br/ws/${cepNominatim}/json/`);
+      const viaCep = await buscaCep.json();
+      if (viaCep && !viaCep.erro && viaCep.cep) {
+        return viaCep.cep.replace("-", "");
+      }
+    }
+    return cepNominatim;
+  }
+  return "";
+}
+
 function FormularioPopup({ open, onClose, adicionarColeta }) {
   const [step, setStep] = useState(1);
   const [image, setImage] = useState(null);
@@ -67,36 +109,27 @@ function FormularioPopup({ open, onClose, adicionarColeta }) {
   const [cep, setCep] = useState("");
   const [geoError, setGeoError] = useState("");
   const [endereco, setEndereco] = useState(null);
+  const [buscandoCep, setBuscandoCep] = useState(false);
 
-  // Preenche o CEP automaticamente ao chegar na etapa 2
+  // Ao abrir o passo do CEP, tenta preencher automaticamente pelo GPS
   useEffect(() => {
     async function preencherCepAutomaticamente() {
       if (step === 2 && cep === "") {
-        let lat = -3.119;
-        let lon = -60.021;
+        setBuscandoCep(true);
         if (navigator.geolocation) {
-          await new Promise((resolve) => {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                lat = position.coords.latitude;
-                lon = position.coords.longitude;
-                resolve();
-              },
-              () => resolve(),
-              { timeout: 5000 }
-            );
-          });
-        }
-        // Busca o CEP pelo Nominatim
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&country=Brazil&format=json`
-        );
-        const data = await response.json();
-        // Só preenche se não for genérico (ex: 69000000)
-        if (data && data.address && data.address.postcode && !/^69000/.test(data.address.postcode)) {
-          setCep(data.address.postcode.replace("-", ""));
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              const cepAuto = await buscarCepPorLatLon(lat, lon);
+              if (cepAuto) setCep(cepAuto);
+              setBuscandoCep(false);
+            },
+            () => setBuscandoCep(false),
+            { timeout: 5000 }
+          );
         } else {
-          setCep(""); // Não preenche se for genérico
+          setBuscandoCep(false);
         }
       }
     }
@@ -140,12 +173,11 @@ function FormularioPopup({ open, onClose, adicionarColeta }) {
         return;
       }
 
-      // Tenta várias combinações, incluindo só o CEP
       let tentativas = [
         [endereco.logradouro, endereco.bairro, endereco.localidade, endereco.uf].filter(Boolean).join(', '),
         [endereco.bairro, endereco.localidade, endereco.uf].filter(Boolean).join(', '),
         [endereco.localidade, endereco.uf].filter(Boolean).join(', '),
-        endereco.cep // Tenta só o CEP puro
+        endereco.cep
       ];
 
       let coords = null;
@@ -157,7 +189,6 @@ function FormularioPopup({ open, onClose, adicionarColeta }) {
       }
 
       if (coords) {
-        // Adiciona nova coleta ao array
         adicionarColeta({
           imagePreview,
           tipoResiduo,
@@ -179,10 +210,11 @@ function FormularioPopup({ open, onClose, adicionarColeta }) {
     }
   }
 
-  function handleImageChange(e) {
+  async function handleImageChange(e) {
     if (e.target.files && e.target.files[0]) {
       setImage(e.target.files[0]);
-      setImagePreview(URL.createObjectURL(e.target.files[0]));
+      const base64 = await fileToBase64(e.target.files[0]);
+      setImagePreview(base64);
     }
   }
 
@@ -218,7 +250,7 @@ function FormularioPopup({ open, onClose, adicionarColeta }) {
           )}
           <button
             onClick={handleContinue}
-            disabled={!image}
+            disabled={!imagePreview}
             style={{ marginTop: 16 }}
           >
             Continuar
@@ -254,7 +286,13 @@ function FormularioPopup({ open, onClose, adicionarColeta }) {
               width: "100%",
               boxSizing: "border-box"
             }}
+            disabled={buscandoCep}
           />
+          {buscandoCep && (
+            <div style={{ color: "#0a3d0a", marginTop: 8 }}>
+              Buscando CEP pela sua localização...
+            </div>
+          )}
           {endereco && (
             <div style={{ marginTop: 8, fontSize: "0.95rem", color: "#0a3d0a" }}>
               <div><strong>Logradouro:</strong> {endereco.logradouro}</div>
@@ -293,15 +331,32 @@ export default function MapHomePage() {
   const [coletas, setColetas] = useState([]);
   const [mapCenter, setMapCenter] = useState([-3.119, -60.021]);
   const [userPosition, setUserPosition] = useState(null);
+  const [userCep, setUserCep] = useState('');
 
-  function atualizarLocalizacaoUsuario() {
+  // Carrega coletas do localStorage ao iniciar
+  useEffect(() => {
+    const salvas = localStorage.getItem('coletas');
+    if (salvas) setColetas(JSON.parse(salvas));
+  }, []);
+
+  // Salva coletas no localStorage sempre que mudar
+  useEffect(() => {
+    localStorage.setItem('coletas', JSON.stringify(coletas));
+    window.dispatchEvent(new Event('storage'));
+  }, [coletas]);
+
+  // Atualiza localização do usuário e centraliza o mapa
+  async function atualizarLocalizacaoUsuario() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
           setMapCenter([lat, lng]);
           setUserPosition([lat, lng]);
+          // Busca o CEP da localização
+          const cepAtual = await buscarCepPorLatLon(lat, lng);
+          setUserCep(cepAtual);
         },
         () => {
           alert("Não foi possível obter sua localização.");
@@ -312,12 +367,17 @@ export default function MapHomePage() {
     }
   }
 
+  // Mantém o mapa centralizado na posição do usuário se ele se mover
   useEffect(() => {
     let watchId;
     if (navigator.geolocation) {
       watchId = navigator.geolocation.watchPosition(
-        (position) => {
+        async (position) => {
           setMapCenter([position.coords.latitude, position.coords.longitude]);
+          setUserPosition([position.coords.latitude, position.coords.longitude]);
+          // Atualiza o CEP também ao mover
+          const cepAtual = await buscarCepPorLatLon(position.coords.latitude, position.coords.longitude);
+          setUserCep(cepAtual);
         }
       );
     }
@@ -346,6 +406,12 @@ export default function MapHomePage() {
                 <Popup>
                   <div>
                     <strong>Sua localização atual</strong>
+                    {userCep && (
+                      <>
+                        <br />
+                        <strong>CEP:</strong> {userCep}
+                      </>
+                    )}
                   </div>
                 </Popup>
               </Marker>
@@ -401,3 +467,7 @@ export default function MapHomePage() {
     </div>
   );
 }
+/*window.onbeforeunload = () => {
+  localStorage.removeItem('coletas');
+};
+*/
