@@ -6,7 +6,9 @@ import api from '../api/axios';
 import './MissionDetailPage';
 import './MissionsListPage.css';
 import Sidebar from '../components/common/Sidebar';
-import Header from '../components/common/Header'
+import Header from '../components/common/Header';
+
+import HomemComposteira from "../assets/images/homem-composteira.png";
 
 
 const MissionsListPage = () => {
@@ -39,7 +41,7 @@ const MissionsListPage = () => {
         <div className="missions-list">
           {Array.isArray(missoes) && missoes.map(missao => (
             <div key={missao.id} className="mission-card" onClick={() => navigate(`/missoes/${missao.id}`)}>
-              <img src={`/assets/missoes/${missao.imagem}`} alt={missao.titulo} />
+              <img src={HomemComposteira} alt={missao.titulo} />
               <div className="mission-content">
                 <h2>{missao.titulo}</h2>
                 <p>{missao.descricao}</p>

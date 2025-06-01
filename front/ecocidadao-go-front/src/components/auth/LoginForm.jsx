@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
+import GoogleButton from './GoogleButton';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -50,6 +51,10 @@ export default function LoginForm() {
         />
       </label>
       <button type="submit">Entrar</button>
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+  <p>ou</p>
+  <GoogleButton />
+</div>
     </form>
   );
 }

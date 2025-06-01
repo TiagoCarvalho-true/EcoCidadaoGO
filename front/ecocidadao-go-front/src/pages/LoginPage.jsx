@@ -2,7 +2,7 @@ import React from 'react';
 import LoginForm from '../components/auth/LoginForm';
 import './LoginPage.css';
 
-import googleIcon from '../assets/icons/google.png';
+import GoogleButton from './GoogleButton';
 
 
 
@@ -19,11 +19,7 @@ export default function LoginPage() {
       <div className="login-panel right">
         <h2>Login de Conta</h2>
         <div className="social-login">
-          <img
-            src={googleIcon}
-            alt="Google"
-            className="social-icon"
-          />
+        <GoogleButton />
           
         </div>
         <LoginForm />

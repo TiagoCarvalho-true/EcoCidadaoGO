@@ -78,6 +78,9 @@ const Header = () => {
       <div className="header-right">
         {isLoggedIn ? (
           <>
+            <Link to="/dashboard" className="icon-button" title="Voltar para a tela inicial" style={{marginRight: 8}}>
+              <i className="bi bi-house-door-fill"></i>
+            </Link>
             <Link to="/perfil" className="icon-button">
               <i className="bi bi-person-fill"></i>
             </Link>
@@ -94,6 +97,9 @@ const Header = () => {
           </>
         ) : (
           <>
+            <Link to="/dashboard" className="icon-button" title="Voltar para a tela inicial" style={{marginRight: 8}}>
+              <i className="bi bi-house-door-fill"></i>
+            </Link>
             <Link to="/login" className="icon-button">
               <i className="bi bi-person-fill"></i>
             </Link>
@@ -118,14 +124,17 @@ const Header = () => {
       <nav className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
         {isLoggedIn ? (
           <>
-            <Link to="/perfil" className="nav-link">
+            <Link to="/dashboard" className="nav-link" onClick={toggleMenu}>
+              <i className="bi bi-house-door-fill"></i> Voltar para a tela inicial
+            </Link>
+            <Link to="/perfil" className="nav-link" onClick={toggleMenu}>
               Perfil
             </Link>
             <button
               type="button"
               className="nav-link btn-black"
               style={{ background: 'none', border: 'none', color: 'white', padding: 0 }}
-              onClick={handleNotificationClick}
+              onClick={() => { handleNotificationClick(); toggleMenu(); }}
             >
               Notificações
             </button>
@@ -135,18 +144,21 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link to="/login" className="nav-link">
+            <Link to="/dashboard" className="nav-link" onClick={toggleMenu}>
+               Voltar para a tela inicial
+            </Link>
+            <Link to="/login" className="nav-link" onClick={toggleMenu}>
               Login
             </Link>
             <button
               type="button"
               className="nav-link btn-black"
               style={{ background: 'none', border: 'none', color: 'white', padding: 0 }}
-              onClick={handleNotificationClick}
+              onClick={() => { handleNotificationClick(); toggleMenu(); }}
             >
               Notificações
             </button>
-            <Link to="/register" className="nav-link btn-black">
+            <Link to="/register" className="nav-link btn-black" onClick={toggleMenu}>
               Registrar
             </Link>
           </>

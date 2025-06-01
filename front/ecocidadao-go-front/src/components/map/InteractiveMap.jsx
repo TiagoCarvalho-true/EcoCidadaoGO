@@ -1,48 +1,77 @@
-import React from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import TrashPointPopup from './TrashPointPopup';
 import './InteractiveMap.css';
+import iconeLixo from '../../assets/icons/salocadelixo.png';
 
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+const customIcon = new L.Icon({
+  iconUrl: iconeLixo,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+  popupAnchor: [0, -40],
 });
 
-const fakePoints = [
-  {
-    id: 1,
-    type: 'Plástico',
-    date: new Date(),
-    status: 'Pendente',
-    photo: 'https://via.placeholder.com/100',
-    position: [-15.7942, -47.8822],
-  },
-  {
-    id: 2,
-    type: 'Metal',
-    date: new Date(),
-    status: 'Recolhido',
-    photo: 'https://via.placeholder.com/100',
-    position: [-15.8000, -47.8800],
-  }
-];
-
 export default function InteractiveMap() {
+  const [points, setPoints] = useState([]);
+
+  useEffect(() => {
+    const salvas = localStorage.getItem('coletas');
+    if (salvas) setPoints(JSON.parse(salvas));
+  }, []);
+
+  useEffect(() => {
+    const atualizar = () => {
+      const salvas = localStorage.getItem('coletas');
+      if (salvas) setPoints(JSON.parse(salvas));
+      else setPoints([]);
+    };
+    window.addEventListener('storage', atualizar);
+    return () => window.removeEventListener('storage', atualizar);
+  }, []);
+
   return (
-    <MapContainer center={[-3.119, -60.021]}
- zoom={13} className='map'>
+    <MapContainer center={[-3.119, -60.021]} zoom={13} className='map'>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {fakePoints.map(point => (
-        <Marker key={point.id} position={point.position}>
-          <TrashPointPopup point={point} />
+      {points.map((point, idx) => (
+        <Marker
+          key={idx}
+          position={[point.latitude, point.longitude]}
+          icon={customIcon}
+        >
+          <Popup>
+            <div style={{ maxWidth: 240 }}>
+              <strong>Tipo de Resíduo:</strong> {point.tipoResiduo}<br />
+              <strong>CEP:</strong> {point.cep}<br />
+              <strong>Logradouro:</strong> {point.logradouro}<br />
+              <strong>Bairro:</strong> {point.bairro}<br />
+              <strong>Cidade:</strong> {point.localidade}<br />
+              <strong>UF:</strong> {point.uf}<br />
+              {point.imagePreview && (
+                <img
+                  src={point.imagePreview}
+                  alt="Foto do resíduo"
+                  style={{
+                    width: "100%",
+                    maxWidth: 200,
+                    marginTop: 20,
+                    borderRadius: 8,
+                    border: "2px solid rgb(110, 255, 127)",
+                    objectFit: "cover"
+                  }}
+                />
+              )}
+            </div>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>
   );
 }
+//limpa o local storage
+/*window.onbeforeunload = () => {
+  localStorage.removeItem('coletas');
+};
+*/
